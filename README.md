@@ -36,3 +36,16 @@ nmap -A TARGET-IP
 nmap --script vuln TARGET-IP
 
 nmap -p- TARGET-IP
+```
+
+---
+
+# 📸 Lab Screenshots
+
+## Nmap Enumeration
+
+![Nmap Scan](screenshots/labs1.png)
+
+## Wireshark HTTP Analysis
+
+![Wireshark Capture](screenshots/labs2.png)
