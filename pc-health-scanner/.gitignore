@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+PC_Health_Quarantine/
+report_*.txt
+*.bat
