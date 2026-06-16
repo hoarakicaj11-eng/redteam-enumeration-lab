@@ -1,0 +1,8 @@
+config.yaml
+report.json
+report.md
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.log

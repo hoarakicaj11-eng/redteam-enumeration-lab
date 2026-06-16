@@ -1,0 +1,54 @@
+# Copy this file to config.yaml and fill in YOUR OWN details.
+# config.yaml is gitignored on purpose so you don't accidentally publish
+# your target list or internal paths.
+#
+# AUTHORIZATION RULE (enforced in code, not just here):
+# Network-scoped agents (port_scanner, tls_checker, dns_health, etc.) will
+# refuse to run against anything not listed in authorized_targets below.
+# Only list hosts/domains you own or have explicit written permission to test.
+
+authorized_targets:
+  - 127.0.0.1
+  # - your-own-domain.com
+
+# Local paths for agents that scan your own code/logs rather than a network
+# target. "default" is used by any path-agent that doesn't have its own entry.
+path_targets:
+  default: "."
+  # secrets_scanner: "/path/to/your/repo"
+  # dependency_checker: "/path/to/your/repo"
+  # log_anomaly: "/var/log/auth.log"
+
+# Which of the 21 agents to run. Comment out / remove any you don't want.
+enabled_agents:
+  - port_scanner
+  - tls_checker
+  - dns_health
+  - firewall_audit
+  - network_topology
+  - http_headers
+  - cookie_security
+  - open_redirect_checker
+  - ct_monitor
+  - secrets_scanner
+  - dependency_checker
+  - license_checker
+  - git_history_scanner
+  - cve_feed
+  - advisory_aggregator
+  - breach_news_monitor
+  - threat_actor_tracker
+  - log_anomaly
+  - diff_tracker
+
+port_scanner:
+  ports: "1-1024"
+  threads: 50
+  timeout: 1.0
+
+tls_checker:
+  port: 443
+
+cve_feed:
+  keywords: []   # e.g. ["nginx", "openssh"] to filter to your stack
+  limit: 10
