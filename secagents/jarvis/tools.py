@@ -75,6 +75,36 @@ def run_security_scan(target: str | None = None) -> dict:
     return report
 
 
+def run_single_agent(agent_module: str, target: str | None = None) -> dict:
+    """Runs exactly one agent by module name — this is what each of the 21 personas calls.
+    Respects the same authorization gate as everything else: a network-type agent given
+    an unauthorized target will return the standard "not authorized" Finding, not actually scan it.
+    """
+    from orchestrator import load_agent_classes
+
+    config = _load_config()
+    classes = load_agent_classes()
+    AgentClass = classes.get(agent_module)
+    if not AgentClass:
+        return {"error": f"Unknown agent module: {agent_module}"}
+
+    agent = AgentClass(config)
+    path_targets = config.get("path_targets", {"default": "."})
+
+    if agent.target_type == "none":
+        findings = agent.run(None)
+    elif agent.target_type == "path":
+        resolved = target or path_targets.get(agent_module, path_targets.get("default", "."))
+        findings = agent.run(resolved)
+    else:  # network
+        if not target:
+            return {"error": "This agent needs a target (hostname/IP). It must also be in "
+                              "config.yaml's authorized_targets to actually run."}
+        findings = agent.run(target)
+
+    return {"agent": agent_module, "findings": [f.to_dict() for f in findings]}
+
+
 def run_malware_scan(path: str = ".", include_usb: bool = False) -> dict:
     config = {"malware_scanner": {"include_usb": include_usb}}
     agent = MalwareScannerAgent(config)

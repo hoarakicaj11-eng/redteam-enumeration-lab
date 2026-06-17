@@ -34,9 +34,43 @@ in `jarvis/tools.py` itself, so even if the model gets it wrong, nothing
 destructive fires without a separate `confirmed=true` step that only
 happens after you've said yes.
 
-If you'd rather not run an LLM in the loop, every piece below also works
-standalone from the command line — Jarvis is a convenience layer, not a
-requirement.
+## 21 specialist personas
+
+If you'd rather talk to one specialist at a time instead of one
+generalist, `agents_chat.py` gives you a menu of 21 named personas, each
+permanently bound to exactly one agent. They stay in their lane on
+purpose — ask Recon (the port scanner) about TLS certs and it'll point
+you to Cipher instead of guessing at something outside its specialty.
+
+```bash
+cd jarvis
+python3 agents_chat.py
+```
+
+```
+Pick a specialist:
+
+   1. Recon       — Network reconnaissance — finds what's open and what's listening
+   2. Cipher       — TLS/certificate auditor — expiry, protocol strength, weak ciphers
+   ...
+  21. Analyst      — The overview — runs everything enabled and gives you the big picture + risk score
+
+Talk to (number or name): 14
+You're now talking to Hunter — Malware scanner — hash-based detection, USB drives, can quarantine
+you> scan my downloads folder
+  [Hunter is running run_check...]
+Hunter> Scanned 142 files. No threats found.
+you> switch
+```
+
+Each persona has exactly one tool wired to its own agent (Hunter also
+gets quarantine access, confirmation-gated the same way as in `jarvis.py`).
+Type `switch` mid-conversation to jump to a different specialist, or
+`exit` to quit.
+
+If you'd rather not run an LLM in the loop at all, every piece below also
+works standalone from the command line — both Jarvis modes are a
+convenience layer, not a requirement.
 
 ## ⚠️ Authorization, not optional
 
