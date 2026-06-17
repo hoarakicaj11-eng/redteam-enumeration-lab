@@ -42,6 +42,7 @@ AGENT_REGISTRY = [
     ("threat_actor_tracker", "ThreatActorTrackerAgent"),
     ("log_anomaly", "LogAnomalyAgent"),
     ("diff_tracker", "DiffTrackerAgent"),
+    ("malware_scanner", "MalwareScannerAgent"),
 ]
 
 

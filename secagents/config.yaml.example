@@ -40,6 +40,7 @@ enabled_agents:
   - threat_actor_tracker
   - log_anomaly
   - diff_tracker
+  - malware_scanner
 
 port_scanner:
   ports: "1-1024"
@@ -52,3 +53,6 @@ tls_checker:
 cve_feed:
   keywords: []   # e.g. ["nginx", "openssh"] to filter to your stack
   limit: 10
+
+malware_scanner:
+  include_usb: false   # set true to also scan any connected removable drives
