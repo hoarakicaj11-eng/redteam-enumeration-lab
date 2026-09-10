@@ -1,0 +1,35 @@
+﻿title: Suspicious PowerShell Execution
+id: 8c5c7c1e-2a4a-4f8d-9f6c-123456789001
+status: experimental
+description: Detects potentially suspicious PowerShell execution using Sysmon process creation telemetry.
+author: SigmaLab
+date: 2026-09-10
+
+logsource:
+    product: windows
+    category: process_creation
+
+detection:
+    selection:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+    suspicious_flags:
+        CommandLine|contains:
+            - ' -enc '
+            - ' -encodedcommand '
+            - ' -nop '
+            - ' -noprofile '
+            - ' -executionpolicy bypass'
+            - ' -windowstyle hidden'
+    condition: selection and suspicious_flags
+
+falsepositives:
+    - Legitimate administrative PowerShell scripts
+    - Software deployment tools
+
+level: medium
+
+tags:
+    - attack.execution
+    - attack.t1059.001
